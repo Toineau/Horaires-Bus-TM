@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeoMobilité - Horaires</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Horaires des lignes</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="horaires.js"></script>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="NeoMobilité Logo" class="logo" />
-    <h1>Horaires des lignes</h1>
-  </header>
+  <div class="badge-container">
+    <img src="logo.png" alt="Logo de l'entreprise" class="logo" />
+    
+    <div id="loader" class="loader">
+      <div class="container"><div class="line"></div></div>
+    </div>
 
-  <main id="horaires-container"></main>
-
-  <script src="js/script.js"></script>
+    <div id="content" style="display: none;">
+      <!-- Les badges horaires -->
+    </div>
+  </div>
 </body>
 </html>
