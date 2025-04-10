@@ -1,135 +1,27 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 1em;
-  background: #f9f9f9;
-  color: #333;
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horaires des lignes</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="horaires.js"></script>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo Entreprise" class="logo" />
+    <h1>Prochains passages des lignes</h1>
+  </header>
 
-.logo {
-  max-width: 150px;
-  margin-bottom: 1em;
-}
+  <div id="loader" class="loader-container">
+    <div class="container"><div class="line"></div></div>
+  </div>
 
-header {
-  text-align: center;
-}
-
-.ligne {
-  background: white;
-  border-radius: 10px;
-  padding: 1em;
-  margin: 1em auto;
-  max-width: 600px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.ligne h2 {
-  margin: 0 0 0.5em;
-}
-
-.bus-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.separator {
-  margin: 0 10px;
-  color: #aaa;
-}
-
-.loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-.hidden {
-  display: none;
-}
-
-/* Animation loader */
-.container {
-  --uib-size: 28;
-  --uib-color: black;
-  --uib-speed: 3.5s;
-  --uib-stroke: 4;
-  --uib-mult: calc(var(--uib-size) / var(--uib-stroke));
-  --uib-stroke-px: calc(var(--uib-stroke) * 1px);
-  --uib-size-px: calc(var(--uib-size) * 1px);
-  position: relative;
-  height: var(--uib-size-px);
-  width: var(--uib-size-px);
-}
-
-.line {
-  position: absolute;
-  top: calc(50% - var(--uib-stroke-px) / 2);
-  left: calc(50% - var(--uib-stroke-px) / 2);
-  width: var(--uib-stroke-px);
-  height: var(--uib-stroke-px);
-  background-color: var(--uib-color);
-  animation: center-line var(--uib-speed) ease infinite;
-  transition: background-color 0.3s ease;
-}
-
-.container::before,
-.container::after {
-  content: '';
-  position: absolute;
-  width: var(--uib-stroke-px);
-  height: var(--uib-stroke-px);
-  background-color: var(--uib-color);
-  animation: explore var(--uib-speed) ease infinite;
-  transition: background-color 0.3s ease;
-}
-
-.container::after {
-  animation-delay: calc(var(--uib-speed) * -0.5);
-}
-
-@keyframes center-line {
-  0%, 25%, 50%, 75%, 100% {
-    transform: scaleX(1) scaleY(1);
-  }
-  12.5%, 62.5% {
-    transform: scaleX(var(--uib-mult)) scaleY(1);
-  }
-  37.5%, 87.5% {
-    transform: scaleX(1) scaleY(var(--uib-mult));
-  }
-}
-
-@keyframes explore {
-  0%, 100% {
-    transform: scaleX(1) scaleY(1) translate(0%, 0%);
-    top: 0; left: 0;
-  }
-  12.5% {
-    transform: scaleX(var(--uib-mult)) scaleY(1);
-  }
-  25% {
-    transform: scaleX(1) scaleY(1);
-    left: initial; right: 0;
-  }
-  37.5% {
-    transform: scaleY(var(--uib-mult));
-    top: initial; bottom: 0;
-  }
-  50% {
-    transform: scaleX(1) scaleY(1);
-  }
-  62.5% {
-    transform: scaleX(var(--uib-mult));
-    left: 0;
-  }
-  75% {
-    transform: scaleX(1) scaleY(1);
-  }
-  87.5% {
-    transform: scaleY(var(--uib-mult));
-    top: 0;
-  }
-}
+  <main id="app" class="hidden">
+    <div class="ligne ligne1" id="ligne1"></div>
+    <div class="ligne ligne2" id="ligne2"></div>
+    <div class="ligne ligne3" id="ligne3"></div>
+    <div class="ligne ligne4" id="ligne4"></div>
+  </main>
+</body>
+</html>
