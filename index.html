@@ -3,19 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeoMobilité – Horaires</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
+  <title>Néo Mobilité – Horaires</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Logo NeoMobilité" id="logo-site" />
-  </header>
 
-  <div id="loader-wrapper">
-    <div class="container"><div class="line"></div></div>
+  <h2>🚌 Prochains passages des lignes</h2>
+
+  <div class="ligne" id="ligne1">
+    <img src="img/L1.png" alt="Ligne 1" />
+    <div>
+      <strong>Ligne 1 - Gare Centrale <> Campus Alan Turing</strong><br>
+      <span id="next1">Chargement...</span>
+    </div>
   </div>
 
-  <main id="lineup" style="display: none;"></main>
+  <div class="ligne" id="ligne2">
+    <img src="img/L2.png" alt="Ligne 2" />
+    <div>
+      <strong>Ligne 2 - Gare Centrale <> Aéroport</strong><br>
+      <span id="next2">Chargement...</span>
+    </div>
+  </div>
+
+  <div class="ligne" id="ligne3">
+    <img src="img/L3.png" alt="Ligne 3" />
+    <div>
+      <strong>Ligne 3 - Gare Centrale <> Campus Marthe Gautier</strong><br>
+      <span id="next3">Chargement...</span>
+    </div>
+  </div>
+
+  <div class="ligne" id="ligne4">
+    <img src="img/L4.png" alt="Ligne 4" />
+    <div>
+      <strong>Ligne 4 - Gare Centrale <> Gare de l'Est</strong><br>
+      <span id="next4">Chargement...</span>
+    </div>
+  </div>
+
+  <script src="js/horaires.js"></script>
 </body>
 </html>
