@@ -1,52 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
   const horaires = {
-    1: { nom: "Campus Alan Turing", image: "L1.png", freq: { semaine: 16, samedi: 24, dimanche: 48 } },
-    2: { nom: "Aéroport", image: "L2.png", freq: { semaine: 11, samedi: 13, dimanche: 20 } },
-    3: { nom: "Campus Marthe Gautier", image: "L3.png", freq: { semaine: 16, samedi: 21, dimanche: 32 } },
-    4: { nom: "Gare de l'Est", image: "L4.png", freq: { semaine: 19, samedi: 28, dimanche: 20 } },
+    1: { label: "Campus Alan Turing", freq: [24, 16, null, 24, 24, 48, null, 48] },
+    2: { label: "Aéroport", freq: [16, 11, 40, 20, 13, 40, 40, 20] },
+    3: { label: "Campus Marthe Gautier", freq: [32, 16, 64, 32, 21, 64, 64, 32] },
+    4: { label: "Gare de l’Est", freq: [28, 19, null, null, 28, null, null, null] },
   };
 
-  const today = new Date();
-  const hour = today.getHours();
-  const day = today.getDay();
+  const now = new Date();
+  const day = now.getDay(); // 0=dimanche, 6=samedi
+  const hour = now.getHours();
+  let type;
 
-  function getFrequence(line) {
-    if (day === 0) return horaires[line].freq.dimanche;
-    if (day === 6) return horaires[line].freq.samedi;
-    return horaires[line].freq.semaine;
+  if (day === 0) {
+    type = hour >= 19 ? 7 : 6;
+  } else if (day === 6) {
+    if (hour >= 19) type = 5;
+    else if (hour >= 7 && hour <= 10 || hour >= 16 && hour <= 19) type = 4;
+    else type = 3;
+  } else {
+    if (hour >= 19) type = 2;
+    else if (hour >= 7 && hour <= 10 || hour >= 16 && hour <= 19) type = 1;
+    else type = 0;
   }
 
-  function generateBadge(line) {
-    const freq = getFrequence(line);
-    const prochain = freq;
-    const suivant = freq * 2;
-
-    return `
-      <div class="line-badge">
-        <div class="line-title">
-          <img src="${horaires[line].image}" alt="Ligne ${line}">
-          <strong>Ligne ${line} - ${horaires[line].nom}</strong>
-        </div>
-        <div class="next-bus">
-          <span>Direction → ${horaires[line].nom} : ${prochain} min</span>
-          <span>|</span>
-          <span>Suivant : ${suivant} min</span>
-        </div>
-        <div class="next-bus">
-          <span>Direction → Gare Centrale : ${prochain} min</span>
-          <span>|</span>
-          <span>Suivant : ${suivant} min</span>
-        </div>
-      </div>`;
+  function formatMinutes(minutes) {
+    return minutes !== null ? `${minutes} min` : "Fin de service";
   }
 
-  // Simule chargement
-  setTimeout(() => {
-    const content = document.getElementById("content");
-    const loader = document.getElementById("loader");
-    loader.style.display = "none";
-    content.style.display = "block";
+  Object.entries(horaires).forEach(([id, ligne]) => {
+    const freq = ligne.freq[type];
+    const suivant = freq !== null ? new Date(now.getTime() + freq * 60000) : null;
+    const suivant2 = freq !== null ? new Date(now.getTime() + freq * 2 * 60000) : null;
 
-    content.innerHTML = Object.keys(horaires).map(generateBadge).join("");
-  }, 1500);
+    const html = `
+      <h2>Ligne ${id} - Gare Centrale ⇄ ${ligne.label}</h2>
+      <div class="bus-info">
+        <span>Direction ${ligne.label} : ${suivant ? `${formatMinutes(freq)} → ${suivant.getHours()}h${String(suivant.getMinutes()).padStart(2, "0")}` : "Fin de service"}</span>
+        <span class="separator">|</span>
+        <span>Bus suivant : ${suivant2 ? `${suivant2.getHours()}h${String(suivant2.getMinutes()).padStart(2, "0")}` : "Fin de service"}</span>
+      </div>
+    `;
+    document.getElementById(`ligne${id}`).innerHTML = html;
+  });
+
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("app").classList.remove("hidden");
 });
