@@ -52,7 +52,7 @@ function checkPerturbation(callback) {
   fetch("https://seal.transport-manager.net/Toineau/traffic-et-perturbations/")
     .then(res => res.text())
     .then(html => {
-      const isPerturbed = html.includes("Trafic légèrement perturbé");
+      const isPerturbed = html.includes("perturbé");
       callback(isPerturbed);
     })
     .catch(() => callback(false));
