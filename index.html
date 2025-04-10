@@ -2,22 +2,26 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Horaires des lignes</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="horaires.js"></script>
 </head>
 <body>
-  <div class="badge-container">
-    <img src="logo.png" alt="Logo de l'entreprise" class="logo" />
-    
-    <div id="loader" class="loader">
-      <div class="container"><div class="line"></div></div>
-    </div>
+  <header>
+    <img src="logo.png" alt="Logo Entreprise" class="logo" />
+    <h1>Prochains passages des lignes</h1>
+  </header>
 
-    <div id="content" style="display: none;">
-      <!-- Les badges horaires -->
-    </div>
+  <div id="loader" class="loader-container">
+    <div class="container"><div class="line"></div></div>
   </div>
+
+  <main id="app" class="hidden">
+    <div class="ligne" id="ligne1"></div>
+    <div class="ligne" id="ligne2"></div>
+    <div class="ligne" id="ligne3"></div>
+    <div class="ligne" id="ligne4"></div>
+  </main>
 </body>
 </html>
