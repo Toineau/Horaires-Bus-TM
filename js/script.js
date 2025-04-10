@@ -1,68 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const lignes = [
-    {
-      nom: "Ligne 1",
-      directions: [
-        {
-          nom: "Campus Allan Turing",
-          horaires: { premier: "06h15", deuxieme: "06h30" }
-        },
-        {
-          nom: "Centre-ville",
-          horaires: { premier: "06h20", deuxieme: "06h35" }
-        }
-      ]
-    },
-    {
-      nom: "Ligne 2",
-      directions: [
-        {
-          nom: "Gare Centrale",
-          horaires: { premier: "06h10", deuxieme: "06h25" }
-        },
-        {
-          nom: "Parc Technologique",
-          horaires: { premier: "06h18", deuxieme: "06h33" }
-        }
-      ]
-    }
-  ];
+  const horaires = {
+    1: { nom: "Campus Alan Turing", image: "L1.png", freq: { semaine: 16, samedi: 24, dimanche: 48 } },
+    2: { nom: "Aéroport", image: "L2.png", freq: { semaine: 11, samedi: 13, dimanche: 20 } },
+    3: { nom: "Campus Marthe Gautier", image: "L3.png", freq: { semaine: 16, samedi: 21, dimanche: 32 } },
+    4: { nom: "Gare de l'Est", image: "L4.png", freq: { semaine: 19, samedi: 28, dimanche: 20 } },
+  };
 
-  const container = document.getElementById("horaires-container");
+  const today = new Date();
+  const hour = today.getHours();
+  const day = today.getDay();
 
-  lignes.forEach((ligne) => {
-    const ligneDiv = document.createElement("div");
-    ligneDiv.className = "ligne-block";
+  function getFrequence(line) {
+    if (day === 0) return horaires[line].freq.dimanche;
+    if (day === 6) return horaires[line].freq.samedi;
+    return horaires[line].freq.semaine;
+  }
 
-    const nomLigne = document.createElement("h2");
-    nomLigne.textContent = ligne.nom;
-    ligneDiv.appendChild(nomLigne);
+  function generateBadge(line) {
+    const freq = getFrequence(line);
+    const prochain = freq;
+    const suivant = freq * 2;
 
-    ligne.directions.forEach((dir) => {
-      const dirDiv = document.createElement("div");
-      dirDiv.className = "direction";
-      dirDiv.textContent = `Direction ${dir.nom} :`;
-      ligneDiv.appendChild(dirDiv);
+    return `
+      <div class="line-badge">
+        <div class="line-title">
+          <img src="${horaires[line].image}" alt="Ligne ${line}">
+          <strong>Ligne ${line} - ${horaires[line].nom}</strong>
+        </div>
+        <div class="next-bus">
+          <span>Direction → ${horaires[line].nom} : ${prochain} min</span>
+          <span>|</span>
+          <span>Suivant : ${suivant} min</span>
+        </div>
+        <div class="next-bus">
+          <span>Direction → Gare Centrale : ${prochain} min</span>
+          <span>|</span>
+          <span>Suivant : ${suivant} min</span>
+        </div>
+      </div>`;
+  }
 
-      const horairesContainer = document.createElement("div");
-      horairesContainer.className = "horaires";
+  // Simule chargement
+  setTimeout(() => {
+    const content = document.getElementById("content");
+    const loader = document.getElementById("loader");
+    loader.style.display = "none";
+    content.style.display = "block";
 
-      horairesContainer.innerHTML = `🔹 Prochains départs : `;
-
-      const badge1 = document.createElement("span");
-      badge1.className = "badge";
-      badge1.textContent = dir.horaires.premier;
-
-      const badge2 = document.createElement("span");
-      badge2.className = "badge";
-      badge2.textContent = dir.horaires.deuxieme;
-
-      horairesContainer.appendChild(badge1);
-      horairesContainer.appendChild(badge2);
-
-      ligneDiv.appendChild(horairesContainer);
-    });
-
-    container.appendChild(ligneDiv);
-  });
+    content.innerHTML = Object.keys(horaires).map(generateBadge).join("");
+  }, 1500);
 });
