@@ -1,81 +1,68 @@
-const horaires = {
-  "1": { premier: 6, dernier: 22 },
-  "2": { premier: 5.5, dernier: 23 },
-  "3": { premier: 6.25, dernier: 21.75 },
-  "4": { premier: 6, dernier: 20.5 }
-};
-
-function getCurrentPeriod() {
-  const now = new Date();
-  const h = now.getHours();
-  const d = now.getDay();
-  if (d === 0) return 'dimanche';
-  if (d === 6) return 'samedi';
-  if ((h >= 7 && h < 9) || (h >= 17 && h < 19)) return 'pointes';
-  if (h >= 22 || h < 6) return 'soiree';
-  return 'creuses';
-}
-
-function getFrequency(line, period, isWeekend) {
-  const data = {
-    "1": { "creuses": 24, "pointes": 16, "soiree": null, "samedi": { creuses: 24, pointes: 24, soiree: 48 }, "dimanche": { creuses: null, pointes: 48 } },
-    "2": { "creuses": 16, "pointes": 11, "soiree": 40, "samedi": { creuses: 20, pointes: 13, soiree: 40 }, "dimanche": { creuses: 40, pointes: 20 } },
-    "3": { "creuses": 32, "pointes": 16, "soiree": 64, "samedi": { creuses: 32, pointes: 21, soiree: 64 }, "dimanche": { creuses: 64, pointes: 32 } },
-    "4": { "creuses": 28, "pointes": 19, "soiree": null, "samedi": { creuses: null, pointes: 28, soiree: null }, "dimanche": { creuses: null, pointes: null } }
-  };
-  if (isWeekend) return data[line][isWeekend][period] ?? null;
-  return data[line][period];
-}
-
-function getNextBusTime(interval, line) {
-  const now = new Date();
-  const hour = now.getHours() + now.getMinutes() / 60;
-  const { premier, dernier } = horaires[line];
-
-  if (hour < premier || hour > dernier) {
-    const premierH = Math.floor(premier);
-    const premierM = Math.round((premier % 1) * 60);
-    return `Fin de service. Premier bus à ${premierH}h${premierM.toString().padStart(2, '0')}`;
-  }
-
-  if (!interval) return "Pas de service actuellement";
-  const start = new Date();
-  start.setHours(premier, 0, 0, 0);
-  const minutesNow = now.getHours() * 60 + now.getMinutes();
-  const minutesStart = premier * 60;
-  const sinceStart = minutesNow - minutesStart;
-  const nextIn = interval - (sinceStart % interval);
-  return `Prochain bus dans ${nextIn} min`;
-}
-
-function checkPerturbation(callback) {
-  fetch("https://seal.transport-manager.net/Toineau/traffic-et-perturbations/")
-    .then(res => res.text())
-    .then(html => {
-      const isPerturbed = html.includes("Trafic légèrement perturbé");
-      callback(isPerturbed);
-    })
-    .catch(() => callback(false));
-}
-
-function updateAll() {
-  const period = getCurrentPeriod();
-  const now = new Date();
-  const day = now.getDay();
-  const weekend = (day === 0) ? "dimanche" : (day === 6) ? "samedi" : null;
-
-  checkPerturbation(isPerturbed => {
-    for (let i = 1; i <= 4; i++) {
-      const freq = getFrequency(i.toString(), period, weekend);
-      let text = getNextBusTime(freq, i.toString());
-      if (isPerturbed) text = "Perturbations en cours - retards possibles. " + text;
-      const el = document.getElementById(`next${i}`);
-      if (el) el.innerText = text + ` (${period}${weekend ? ' - ' + weekend : ''})`;
+document.addEventListener("DOMContentLoaded", () => {
+  const lignes = [
+    {
+      nom: "Ligne 1",
+      directions: [
+        {
+          nom: "Campus Allan Turing",
+          horaires: { premier: "06h15", deuxieme: "06h30" }
+        },
+        {
+          nom: "Centre-ville",
+          horaires: { premier: "06h20", deuxieme: "06h35" }
+        }
+      ]
+    },
+    {
+      nom: "Ligne 2",
+      directions: [
+        {
+          nom: "Gare Centrale",
+          horaires: { premier: "06h10", deuxieme: "06h25" }
+        },
+        {
+          nom: "Parc Technologique",
+          horaires: { premier: "06h18", deuxieme: "06h33" }
+        }
+      ]
     }
-  });
-}
+  ];
 
-document.addEventListener("DOMContentLoaded", function () {
-  updateAll();
-  setInterval(updateAll, 60000);
+  const container = document.getElementById("horaires-container");
+
+  lignes.forEach((ligne) => {
+    const ligneDiv = document.createElement("div");
+    ligneDiv.className = "ligne-block";
+
+    const nomLigne = document.createElement("h2");
+    nomLigne.textContent = ligne.nom;
+    ligneDiv.appendChild(nomLigne);
+
+    ligne.directions.forEach((dir) => {
+      const dirDiv = document.createElement("div");
+      dirDiv.className = "direction";
+      dirDiv.textContent = `Direction ${dir.nom} :`;
+      ligneDiv.appendChild(dirDiv);
+
+      const horairesContainer = document.createElement("div");
+      horairesContainer.className = "horaires";
+
+      horairesContainer.innerHTML = `🔹 Prochains départs : `;
+
+      const badge1 = document.createElement("span");
+      badge1.className = "badge";
+      badge1.textContent = dir.horaires.premier;
+
+      const badge2 = document.createElement("span");
+      badge2.className = "badge";
+      badge2.textContent = dir.horaires.deuxieme;
+
+      horairesContainer.appendChild(badge1);
+      horairesContainer.appendChild(badge2);
+
+      ligneDiv.appendChild(horairesContainer);
+    });
+
+    container.appendChild(ligneDiv);
+  });
 });
