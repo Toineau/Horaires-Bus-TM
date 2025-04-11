@@ -36,7 +36,7 @@ function getNextBusTime(interval, line) {
   if (hour < premier || hour > dernier) {
     const premierH = Math.floor(premier);
     const premierM = Math.round((premier % 1) * 60);
-    return `Fin de service. Premier bus à ${premierH}h${premierM.toString().padStart(2, '0')}`;
+    return `Fin de service. Premier bus à ${premierH}h${premierM.toString().padStart(1, '0')}`;
   }
 
   if (!interval) return "Pas de service actuellement";
