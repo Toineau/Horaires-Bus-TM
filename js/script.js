@@ -12,8 +12,8 @@ function getCurrentPeriod() {
   if (d === 0) return 'dimanche';
   if (d === 6) return 'samedi';
   if ((h >= 7 && h < 9) || (h >= 17 && h < 19)) return 'pointes';
-  if (h >= 21 || h < 0) return 'soiree';
-  if (h >= 0 || h < 6) return '';
+  if (h >= 21 || h < 23) return 'soiree';
+  if (h >= 23 || h < 6) return '';
   return 'creuses';
 }
 
