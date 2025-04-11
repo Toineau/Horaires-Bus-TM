@@ -12,16 +12,17 @@ function getCurrentPeriod() {
   if (d === 0) return 'dimanche';
   if (d === 6) return 'samedi';
   if ((h >= 7 && h < 9) || (h >= 17 && h < 19)) return 'pointes';
-  if (h >= 22 || h < 6) return 'soiree';
+  if (h >= 21 || h < 0) return 'soiree';
+  if (h >= 0 || h < 6) return '';
   return 'creuses';
 }
 
 function getFrequency(line, period, isWeekend) {
   const data = {
-    "1": { "creuses": 24, "pointes": 16, "soiree": null, "samedi": { creuses: 24, pointes: 24, soiree: 48 }, "dimanche": { creuses: null, pointes: 48 } },
-    "2": { "creuses": 16, "pointes": 11, "soiree": 40, "samedi": { creuses: 20, pointes: 13, soiree: 40 }, "dimanche": { creuses: 40, pointes: 20 } },
-    "3": { "creuses": 32, "pointes": 16, "soiree": 64, "samedi": { creuses: 32, pointes: 21, soiree: 64 }, "dimanche": { creuses: 64, pointes: 32 } },
-    "4": { "creuses": 28, "pointes": 19, "soiree": null, "samedi": { creuses: null, pointes: 28, soiree: null }, "dimanche": { creuses: null, pointes: null } }
+    "1": { "creuses": 24, "pointes": 16, "soiree": null, "": null, "samedi": { creuses: 24, pointes: 24, soiree: 48 }, "dimanche": { creuses: null, pointes: 48 } },
+    "2": { "creuses": 16, "pointes": 11, "soiree": 40, "": null, "samedi": { creuses: 20, pointes: 13, soiree: 40 }, "dimanche": { creuses: 40, pointes: 20 } },
+    "3": { "creuses": 32, "pointes": 16, "soiree": 64, "": null, "samedi": { creuses: 32, pointes: 21, soiree: 64 }, "dimanche": { creuses: 64, pointes: 32 } },
+    "4": { "creuses": 28, "pointes": 19, "soiree": null, "": null, "samedi": { creuses: null, pointes: 28, soiree: null }, "dimanche": { creuses: null, pointes: null } }
   };
   if (isWeekend) return data[line][isWeekend][period] ?? null;
   return data[line][period];
