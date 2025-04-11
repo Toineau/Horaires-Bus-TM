@@ -1,28 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Horaires Bus</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horaires en temps réel</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="loader" class="loader">
-    <img src="img/logo.png" alt="Chargement..." />
-    <div class="container"><div class="line"></div></div>
+    <img src="img/logo.png" alt="Chargement...">
   </div>
 
   <div id="app" class="hidden">
     <header>
-      <img src="img/logo.png" class="main-logo" alt="Logo entreprise" />
+      <img src="img/logo.png" alt="Logo entreprise" class="main-logo">
       <h1>Horaires en temps réel</h1>
     </header>
 
     <main>
-      <div id="ligne1" class="ligne-card"></div>
-      <div id="ligne2" class="ligne-card"></div>
-      <div id="ligne3" class="ligne-card"></div>
-      <div id="ligne4" class="ligne-card"></div>
+      <!-- Lignes -->
+      <div class="ligne-card" id="ligne1">
+        <img src="img/L1.png" alt="Ligne 1">
+        <div class="direction">
+          <p>→ Campus Alan Turing : <span class="temps" id="l1-dir1"></span> | <span class="temps" id="l1-dir1-next"></span></p>
+          <p>→ Gare Centrale : <span class="temps" id="l1-dir2"></span> | <span class="temps" id="l1-dir2-next"></span></p>
+        </div>
+      </div>
+
+      <div class="ligne-card" id="ligne2">
+        <img src="img/L2.png" alt="Ligne 2">
+        <div class="direction">
+          <p>→ Aéroport : <span class="temps" id="l2-dir1"></span> | <span class="temps" id="l2-dir1-next"></span></p>
+          <p>→ Gare Centrale : <span class="temps" id="l2-dir2"></span> | <span class="temps" id="l2-dir2-next"></span></p>
+        </div>
+      </div>
+
+      <div class="ligne-card" id="ligne3">
+        <img src="img/L3.png" alt="Ligne 3">
+        <div class="direction">
+          <p>→ Campus Marthe Gautier : <span class="temps" id="l3-dir1"></span> | <span class="temps" id="l3-dir1-next"></span></p>
+          <p>→ Gare Centrale : <span class="temps" id="l3-dir2"></span> | <span class="temps" id="l3-dir2-next"></span></p>
+        </div>
+      </div>
+
+      <div class="ligne-card" id="ligne4">
+        <img src="img/L4.png" alt="Ligne 4">
+        <div class="direction">
+          <p>→ Gare de l'Est : <span class="temps" id="l4-dir1"></span> | <span class="temps" id="l4-dir1-next"></span></p>
+          <p>→ Gare Centrale : <span class="temps" id="l4-dir2"></span> | <span class="temps" id="l4-dir2-next"></span></p>
+        </div>
+      </div>
     </main>
   </div>
 
